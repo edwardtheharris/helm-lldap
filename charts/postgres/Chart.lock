@@ -1,0 +1,6 @@
+dependencies:
+- name: boilerplate
+  repository: file://../boilerplate
+  version: 0.16.0
+digest: sha256:204401761c51a64bc8ec0333cfe8cfcb15a6e680313c65a5bad1162fb5ed13ca
+generated: "2025-12-19T21:26:41.540119518Z"

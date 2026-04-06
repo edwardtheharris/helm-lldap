@@ -1,0 +1,9 @@
+dependencies:
+- name: boilerplate
+  repository: https://self-hosters-by-night.github.io/helm-charts
+  version: 0.15.1
+- name: postgres
+  repository: https://self-hosters-by-night.github.io/helm-charts
+  version: 0.13.0
+digest: sha256:69143d4919a0e57c3a95fa0d939ff33391faa6b1cf95cba2e1d5c3c3fcf581a0
+generated: "2025-12-23T13:01:24.16633108Z"

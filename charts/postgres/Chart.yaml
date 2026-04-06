@@ -1,0 +1,17 @@
+annotations:
+  artifacthub.io/category: database
+apiVersion: v2
+appVersion: "18.1"
+dependencies:
+- name: boilerplate
+  repository: file://../boilerplate
+  version: 0.16.0
+description: Postgres is an object-relational database system that provides reliability
+  and data integrity.
+icon: https://raw.githubusercontent.com/self-hosters-by-night/helm-charts/refs/heads/main/assets/postgresql.png
+maintainers:
+- email: git@facorazza.com
+  name: facorazza
+name: postgres
+type: application
+version: 0.13.0
