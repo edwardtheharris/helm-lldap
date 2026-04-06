@@ -182,9 +182,9 @@ ingress:
 
 httproute:
   webui:
-    enabled: false
-    gatewayName: ""
-    namespace: ""
+    enabled: true
+    gatewayName: lldap
+    namespace: ldap
     sectionName: ""
     hostnames: []
     annotations: {}
@@ -196,16 +196,16 @@ httproute:
 
 tcproute:
   ldap:
-    enabled: false
-    gatewayName: ""
-    namespace: ""
+    enabled: true
+    gatewayName: lldap
+    namespace: ldap
     sectionName: ""
     annotations: {}
     weight: 1
   ldaps:
-    enabled: false
-    gatewayName: ""
-    namespace: ""
+    enabled: true
+    gatewayName: lldap
+    namespace: ldap
     sectionName: ""
     annotations: {}
     weight: 1
@@ -239,9 +239,9 @@ persistence:
   # This is to use an existing PersistentVolumeClaim.
   existingClaim: ""
   # This is to set the storage class for the PersistentVolumeClaim.
-  storageClass: ""
+  storageClass: nfs-thw03
   # This is to set the access mode for the PersistentVolumeClaim.
-  accessMode: ReadWriteOnce
+  accessMode: ReadWriteMany
   # This is to set the size of the PersistentVolumeClaim.
   size: 10Gi
   # This is to set annotations for the PersistentVolumeClaim.
@@ -266,7 +266,8 @@ extraVolumeMounts: []
 #    mountPath: "/path/to/keyfile.key"
 #   readOnly: true
 
-nodeSelector: {}
+nodeSelector:
+  kubernetes.io/os: linux
 
 tolerations: []
 
