@@ -53,9 +53,6 @@ securityContext: {}
 
 ## @param env Environment variables to add to the container
 env:
-  # vars:
-  #   NEXTAUTH_SECRET: "CHANGE-ME-OR-USE-A-SECRET"
-
   fromConfigMap: {}
   fromSecret: {}
 
@@ -103,7 +100,7 @@ config:
   # Database configuration
   database:
     # Options: sqlite, postgres (TODO)
-    type: "sqlite"
+    type: "postgres"
     # For external databases, configure URL
     url: ""
     # Example URLs:
@@ -126,10 +123,10 @@ secrets:
   existingSecret: ""
 
   # Secret values
-  jwtSecret: "REPLACE_WITH_RANDOM"
-  keySeed: "REPLACE_WITH_RANDOM"
-  ldapUserPass: "adminPas$word"
-  smtpPassword: "PasswordGoesHere"
+  # jwtSecret: "REPLACE_WITH_RANDOM"
+  # keySeed: "REPLACE_WITH_RANDOM"
+  # ldapUserPass: "adminPas$word"
+  # smtpPassword: "PasswordGoesHere"
 
 # Service configuration
 service:
@@ -162,24 +159,6 @@ service:
     port: 17170
     # nodePort: 30171  # Only used if service.type is NodePort or LoadBalancer
 
-# Ingress configuration
-ingress:
-  webui:
-    enabled: false
-    className: ""
-    annotations: {}
-      # kubernetes.io/ingress.class: nginx
-      # kubernetes.io/tls-acme: "true"
-    hosts:
-      - host: lldap.local
-        paths:
-          - path: /
-            pathType: Prefix
-    tls: []
-    #  - secretName: lldap-tls
-    #    hosts:
-    #      - lldap.local
-
 httproute:
   webui:
     enabled: true
@@ -192,22 +171,6 @@ httproute:
       - path:
           type: PathPrefix
           value: "/"
-    weight: 1
-
-tcproute:
-  ldap:
-    enabled: true
-    gatewayName: lldap
-    namespace: ldap
-    sectionName: ""
-    annotations: {}
-    weight: 1
-  ldaps:
-    enabled: true
-    gatewayName: lldap
-    namespace: ldap
-    sectionName: ""
-    annotations: {}
     weight: 1
 
 resources: {}

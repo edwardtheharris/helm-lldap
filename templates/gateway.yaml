@@ -1,0 +1,19 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: "{{ .Release.Name }}-gateway"
+  annotations:
+    cert-manager.io/cluster-issuer: thw-svc-int-ca
+spec:
+  gatewayClassName: eg
+  listeners:
+    - name: "{{ .Release.Name }}-ldap"
+      protocol: TCP
+      port: 3890
+    - name: "{{ .Release.Name }}-ldaps"
+      protocol: TCP
+      port: 6360
+    - name: "{{ .Release.Name }}-webui"
+      protocol: TCP
+      port: 17170
