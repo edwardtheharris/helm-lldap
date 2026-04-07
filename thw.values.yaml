@@ -6,7 +6,7 @@ global:
   ## @param global.imagePullSecrets Global container registry secret names as an array
   imagePullSecrets: []
   ## @param global.defaultStorageClass Global default StorageClass for Persistent Volume(s)
-  defaultStorageClass: nfs-thw03
+  defaultStorageClass: ""
 
 # This is to override the chart name.
 nameOverride: lldap
@@ -53,9 +53,6 @@ securityContext: {}
 
 ## @param env Environment variables to add to the container
 env:
-  vars:
-    NEXTAUTH_SECRET: "CHANGE-ME-OR-USE-A-SECRET"
-
   fromConfigMap: {}
   fromSecret: {}
 
@@ -63,8 +60,9 @@ envFrom:
   configMaps: []
   # - name: s3-config
 
-  secrets: []
-  #  - name: s3-config
+  secrets:
+    #  - name: s3-config
+    - name: lldap-nextauth
 
 config:
   # If "" create configMap with Helm values, otherwise specify existing configmap name
@@ -102,7 +100,7 @@ config:
   # Database configuration
   database:
     # Options: sqlite, postgres (TODO)
-    type: "sqlite"
+    type: "postgres"
     # For external databases, configure URL
     url: ""
     # Example URLs:
@@ -125,15 +123,15 @@ secrets:
   existingSecret: ""
 
   # Secret values
-  jwtSecret: "REPLACE_WITH_RANDOM"
-  keySeed: "REPLACE_WITH_RANDOM"
-  ldapUserPass: "adminPas$word"
-  smtpPassword: "PasswordGoesHere"
+  # jwtSecret: "REPLACE_WITH_RANDOM"
+  # keySeed: "REPLACE_WITH_RANDOM"
+  # ldapUserPass: "adminPas$word"
+  # smtpPassword: "PasswordGoesHere"
 
 # Service configuration
 service:
   # Service type
-  type: ClusterIP
+  type: LoadBalancer
 
   # Annotations for the service (useful for cloud provider load balancers)
   annotations: {}
@@ -161,29 +159,11 @@ service:
     port: 17170
     # nodePort: 30171  # Only used if service.type is NodePort or LoadBalancer
 
-# Ingress configuration
-ingress:
-  webui:
-    enabled: false
-    className: ""
-    annotations: {}
-      # kubernetes.io/ingress.class: nginx
-      # kubernetes.io/tls-acme: "true"
-    hosts:
-      - host: lldap.local
-        paths:
-          - path: /
-            pathType: Prefix
-    tls: []
-    #  - secretName: lldap-tls
-    #    hosts:
-    #      - lldap.local
-
 httproute:
   webui:
-    enabled: false
-    gatewayName: ""
-    namespace: ""
+    enabled: true
+    gatewayName: lldap
+    namespace: ldap
     sectionName: ""
     hostnames: []
     annotations: {}
@@ -191,22 +171,6 @@ httproute:
       - path:
           type: PathPrefix
           value: "/"
-    weight: 1
-
-tcproute:
-  ldap:
-    enabled: false
-    gatewayName: ""
-    namespace: ""
-    sectionName: ""
-    annotations: {}
-    weight: 1
-  ldaps:
-    enabled: false
-    gatewayName: ""
-    namespace: ""
-    sectionName: ""
-    annotations: {}
     weight: 1
 
 resources: {}
@@ -238,9 +202,9 @@ persistence:
   # This is to use an existing PersistentVolumeClaim.
   existingClaim: ""
   # This is to set the storage class for the PersistentVolumeClaim.
-  storageClass: ""
+  storageClass: nfs-thw03
   # This is to set the access mode for the PersistentVolumeClaim.
-  accessMode: ReadWriteOnce
+  accessMode: ReadWriteMany
   # This is to set the size of the PersistentVolumeClaim.
   size: 10Gi
   # This is to set annotations for the PersistentVolumeClaim.
@@ -265,7 +229,8 @@ extraVolumeMounts: []
 #    mountPath: "/path/to/keyfile.key"
 #   readOnly: true
 
-nodeSelector: {}
+nodeSelector:
+  kubernetes.io/os: linux
 
 tolerations: []
 

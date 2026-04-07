@@ -3,22 +3,23 @@ annotations:
 apiVersion: v2
 appVersion: "2025-05-19"
 dependencies:
-- name: boilerplate
-  repository: https://self-hosters-by-night.github.io/helm-charts
-  version: 0.15.1
-- name: postgres
-  repository: https://self-hosters-by-night.github.io/helm-charts
-  version: 0.13.0
-description: A Helm chart for LLDAP, a lightweight authentication server that provides
+  - name: boilerplate
+    repository: https://self-hosters-by-night.github.io/helm-charts
+    version: 0.15.1
+# - name: postgres
+#   repository: https://self-hosters-by-night.github.io/helm-charts
+#   version: 0.13.0
+description:
+  A Helm chart for LLDAP, a lightweight authentication server that provides
   an opinionated and simplified LDAP interface for authentication.
 icon: https://raw.githubusercontent.com/self-hosters-by-night/helm-charts/refs/heads/main/assets/lldap.png
 keywords:
-- ldap
-- authentication
-- directory
+  - ldap
+  - authentication
+  - directory
 maintainers:
-- email: git@facorazza.com
-  name: facorazza
+  - email: git@facorazza.com
+    name: facorazza
 name: lldap
 type: application
 version: 0.4.0
