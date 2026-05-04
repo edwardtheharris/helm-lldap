@@ -201,6 +201,8 @@ tcproute:
     sectionName: ""
     annotations: {}
     weight: 1
+
+tlsroute:
   ldaps:
     enabled: false
     gatewayName: ""

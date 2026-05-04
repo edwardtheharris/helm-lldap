@@ -6,22 +6,10 @@ metadata:
     {{- include "boilerplate.labels.standard" . | nindent 4 }}
 spec:
   parentRefs:
-  - name: {{ .Release.Name }}-gateway
+  - name: {{ .Release.Name }}
+    namespace: {{ .Release.Namespace }}
+    sectionName: "{{ .Release.Name }}-ldap"
   rules:
   - backendRefs:
     - name: {{ .Release.Name }}
       port: 3890
----
-apiVersion: gateway.networking.k8s.io/v1alpha2
-kind: TCPRoute
-metadata:
-  name: {{ .Release.Name }}-ldaps
-  labels:
-    {{- include "boilerplate.labels.standard" . | nindent 4 }}
-spec:
-  parentRefs:
-  - name: {{ .Release.Name }}-gateway
-  rules:
-  - backendRefs:
-    - name: {{ .Release.Name }}-ldaps
-      port: 6360

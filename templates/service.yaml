@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "boilerplate.names.fullname" . }}
+  name: "{{ .Release.Name }}"
   labels:
     {{- include "boilerplate.labels.standard" . | nindent 4 }}
   {{- with .Values.service.annotations }}
@@ -9,37 +9,19 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  type: {{ .Values.service.type }}
-  {{- if and (eq .Values.service.type "LoadBalancer") .Values.service.loadBalancerIP }}
-  loadBalancerIP: {{ .Values.service.loadBalancerIP }}
-  {{- end }}
-  {{- if and (eq .Values.service.type "LoadBalancer") .Values.service.loadBalancerSourceRanges }}
-  loadBalancerSourceRanges:
-    {{- range .Values.service.loadBalancerSourceRanges }}
-    - {{ . }}
-    {{- end }}
-  {{- end }}
+  type: ClusterIP
   ports:
     - name: ldap
-      port: {{ .Values.service.ldap.port }}
+      port: 3890
       protocol: TCP
-      targetPort: ldap
-      {{- if and (or (eq .Values.service.type "NodePort") (eq .Values.service.type "LoadBalancer")) .Values.service.ldap.nodePort }}
-      nodePort: {{ .Values.service.ldap.nodePort }}
-      {{- end }}
+      targetPort: 3890
     - name: ldaps
-      port: {{ .Values.service.ldaps.port }}
+      port: 6360
       protocol: TCP
-      targetPort: ldaps
-      {{- if and (or (eq .Values.service.type "NodePort") (eq .Values.service.type "LoadBalancer")) .Values.service.ldaps.nodePort }}
-      nodePort: {{ .Values.service.ldaps.nodePort }}
-      {{- end }}
-    - name: webui
-      port: {{ .Values.service.webui.port }}
+      targetPort: 6360
+    - name: http
+      port: 17170
       protocol: TCP
-      targetPort: webui
-      {{- if and (or (eq .Values.service.type "NodePort") (eq .Values.service.type "LoadBalancer")) .Values.service.webui.nodePort }}
-      nodePort: {{ .Values.service.webui.nodePort }}
-      {{- end }}
+      targetPort: 17170
   selector:
-    {{- include "boilerplate.labels.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/name: "{{ .Release.Name }}"
