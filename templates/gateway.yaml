@@ -2,18 +2,51 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
-  name: "{{ .Release.Name }}-gateway"
+  name: "{{ .Release.Name }}"
   annotations:
     cert-manager.io/cluster-issuer: thw-svc-int-ca
+    cert-manager.io/common-name: ldap.breeze-blocks.net
+    cert-manager.io/usages: key agreement,digital signature,server auth
 spec:
   gatewayClassName: eg
   listeners:
+    - name: http
+      port: 80
+      protocol: HTTP
+      hostname: ldap.breeze-blocks.net
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: https
+      hostname: ldap.breeze-blocks.net
+      port: 443
+      protocol: HTTPS
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: "{{ .Release.Name }}-tls"
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: "{{ .Release.Name }}-ldap"
+  annotations:
+    cert-manager.io/cluster-issuer: thw-svc-int-ca
+    cert-manager.io/common-name: ldaps.breeze-blocks.net
+    cert-manager.io/usages: key agreement,digital signature,server auth
+spec:
+  gatewayClassName: eg
+  listeners:
+    - name: "{{ .Release.Name }}-ldaps"
+      protocol: TLS
+      port: 6360
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: lldap-ldaps-tls
     - name: "{{ .Release.Name }}-ldap"
       protocol: TCP
       port: 3890
-    - name: "{{ .Release.Name }}-ldaps"
-      protocol: TCP
-      port: 6360
-    - name: "{{ .Release.Name }}-webui"
-      protocol: TCP
-      port: 17170

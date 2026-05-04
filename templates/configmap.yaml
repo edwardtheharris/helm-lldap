@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "boilerplate.names.fullname" . }}-config
+  name: "{{ .Release.Name }}-config"
   labels:
     {{- include "boilerplate.labels.standard" . | nindent 4 }}
 data:
@@ -18,9 +18,10 @@ data:
   LLDAP_LDAPS_OPTIONS__KEY_FILE: {{ .Values.config.ldaps.keyFile | quote }}
   {{- end }}
 
-  {{- if and (ne .Values.config.database.type "sqlite") (.Values.config.database.url) }}
-  LLDAP_DATABASE_URL: {{ .Values.config.database.url | quote }}
-  {{- end }}
+  LLDAP_SERVICE_PORT_WEBUI: "17170"
+  LLDAP_PORT: "389"
+  LLDAP_SERVICE_PORT: "389"
+  LLDAP_PORT_17170_TCP_PROTO: "HTTPS"
 
   {{- if .Values.config.smtp.enablePasswordReset }}
   LLDAP_SMTP_OPTIONS__ENABLE_PASSWORD_RESET: "true"
