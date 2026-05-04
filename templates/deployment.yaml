@@ -49,6 +49,9 @@ spec:
                 secretKeyRef:
                   name: lldap-secret
                   key: LLDAP_LDAP_USER_PASS
+          envFrom:
+            - configMapRef:
+                name: "{{ .Release.Name }}-config"
           ports:
             - name: ldap
               containerPort: 3890
