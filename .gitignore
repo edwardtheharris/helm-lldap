@@ -1,1 +1,3 @@
 secrets/
+tests/__snapshot__/
+results.xml
