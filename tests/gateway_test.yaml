@@ -1,0 +1,11 @@
+templates:
+  - gateway.yaml
+tests:
+  - it: should work
+    set:
+      image.tag: latest
+    asserts:
+      - isKind:
+          of: Gateway
+      # or you can snapshot the whole manifest
+      - matchSnapshot: {}

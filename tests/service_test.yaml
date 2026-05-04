@@ -1,0 +1,11 @@
+templates:
+  - service.yaml
+tests:
+  - it: should work
+    set:
+      image.tag: latest
+    asserts:
+      - isKind:
+          of: Service
+      # or you can snapshot the whole manifest
+      - matchSnapshot: {}
