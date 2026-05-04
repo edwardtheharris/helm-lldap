@@ -123,10 +123,11 @@ secrets:
   existingSecret: ""
 
   # Secret values
-  # jwtSecret: "REPLACE_WITH_RANDOM"
-  # keySeed: "REPLACE_WITH_RANDOM"
-  # ldapUserPass: "adminPas$word"
-  # smtpPassword: "PasswordGoesHere"
+  jwt_secret: "replace"
+  keySeed: "replace"
+  ldapUserPass: "replace"
+  nextAuth: "replace"
+  smtpPassword: "replace"
 
 # Service configuration
 service:
