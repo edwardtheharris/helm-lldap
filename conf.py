@@ -1,0 +1,102 @@
+#!/usr/bin/env python3
+"""Configuration file for the Sphinx documentation builder.
+#
+# For the full list of built-in configuration values, see the documentation:
+# https://www.sphinx-doc.org/en/master/usage/configuration.html
+
+# -- Project information -----------------------------------------------------
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
+"""
+# pylint: disable=invalid-name,redefined-builtin
+from pathlib import Path
+import version_query
+
+
+def get_release():
+    """Query the current release for the project."""
+    try:
+        repo_path = Path(".")
+        ret_value = version_query.git_query.query_git_repo(repo_path).to_str()
+    except ValueError:
+        ret_value = version_query.Version.from_str("0.0.1").to_str()
+    return ret_value
+
+
+author = "Xander Harris"
+autoyaml_root = "."
+autoyaml_doc_delimiter = "###"
+autoyaml_comment = "#"
+autoyaml_level = 10
+autoyaml_safe_loader = True
+copyright = "Xander Harris (c) 2024. All rights reserved."
+
+# -- General configuration ---------------------------------------------------
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
+
+exclude_patterns = [
+    "_build",
+    "Thumbs.db",
+    ".DS_Store",
+    "charts/**",
+    "**/NOTES.txt.md",
+    "**/NOTES.txt",
+    "**/*requirements.txt",
+    ".venv/*",
+    "**/.venv/*",
+    ".tmp/*",
+    ".pytest_cache/*",
+    "resources/templates/NOTES.txt",
+]
+
+extensions = [
+    "myst_parser",
+    "sphinx_copybutton",
+    "sphinx.ext.autodoc",
+    "sphinx.ext.autosummary",
+    "sphinx.ext.githubpages",
+    "sphinx.ext.intersphinx",
+    "sphinxcontrib.autoyaml",
+]
+
+# -- Options for HTML output -------------------------------------------------
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
+
+html_logo = "_static/img/logo/grafana.png"
+html_favicon = "_static/img/logo/grafana.png"
+html_static_path = ["_static"]
+html_theme = "sphinx_book_theme"
+myst_dmath_double_inline = True
+myst_enable_extensions = [
+    "amsmath",
+    "attrs_block",
+    "attrs_inline",
+    "colon_fence",
+    "deflist",
+    "dollarmath",
+    "fieldlist",
+    "html_admonition",
+    "html_image",
+    "linkify",
+    "replacements",
+    "smartquotes",
+    "strikethrough",
+    "substitution",
+    "tasklist",
+]
+myst_title_to_header = True
+project = "Template Helm Chart"
+rst_epilog = """
+.. sectionauthor:: Xander Harris <xandertheharris@gmail.com>
+
+.. tip::
+
+   <SUDO>
+"""
+release = get_release()
+show_authors = True
+source_suffix = {
+    ".md": "markdown",
+    ".rst": "restructuredtext",
+    ".txt": "markdown",
+}
+templates_path = ["_templates"]
